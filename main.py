@@ -92,8 +92,8 @@ class World():
     def __init__(self, data):
         self.tile_list = []
         self.dot_list = []
-        border_img = pygame.image.load("wall.png")
-        dot_img = pygame.image.load("dot.png")
+        border_img = pygame.image.load("media/wall.png")
+        dot_img = pygame.image.load("media/dot.png")
         row_count = 0
         for row in data:
             col_count = 0
@@ -126,7 +126,7 @@ class World():
 
 class Pacman():
     def __init__(self, x, y, direction):
-        img = pygame.image.load("imageR.jpg")
+        img = pygame.image.load("media/imageR.jpg")
         self.image = pygame.transform.scale(img, (tile_size, tile_size))
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -142,22 +142,22 @@ class Pacman():
         try:
             if world_data[int(py / 25)][int(px / 25) - 1] != 1:
                 if key[pygame.K_LEFT]:
-                    img = pygame.image.load("imageL.jpg")
+                    img = pygame.image.load("media/imageL.jpg")
                     self.image = pygame.transform.scale(img, (tile_size, tile_size))
                     self.direction = "L"
             if world_data[int(py / 25)][int(px / 25) + 1] != 1:
                 if key[pygame.K_RIGHT]:
-                    img = pygame.image.load("imageR.jpg")
+                    img = pygame.image.load("media/imageR.jpg")
                     self.image = pygame.transform.scale(img, (tile_size, tile_size))
                     self.direction = "R"
             if world_data[int(py / 25) - 1][int(px / 25)] != 1:
                 if key[pygame.K_UP]:
-                    img = pygame.image.load("imageU.jpg")
+                    img = pygame.image.load("media/imageU.jpg")
                     self.image = pygame.transform.scale(img, (tile_size, tile_size))
                     self.direction = "U"
             if world_data[int(py / 25) + 1][int(px / 25)] != 1:
                 if key[pygame.K_DOWN]:
-                    img = pygame.image.load("imageD.jpg")
+                    img = pygame.image.load("media/imageD.jpg")
                     self.image = pygame.transform.scale(img, (tile_size, tile_size))
                     self.direction = "D"
         except IndexError:
@@ -273,10 +273,10 @@ class Ghost():
 
 pacman = Pacman(25, 25, "R")
 
-tim = Ghost(225, 450, "D", 'redghost.png')
-pinky = Ghost(225, 250, "R", 'pinkghost.png')
-matt = Ghost(450, 450, "L", 'cyanghost.png')
-clyde = Ghost(450, 250, "D", 'orangeghost.png')
+tim = Ghost(225, 450, "D", 'media/redghost.png')
+pinky = Ghost(225, 250, "R", 'media/pinkghost.png')
+matt = Ghost(450, 450, "L", 'media/cyanghost.png')
+clyde = Ghost(450, 250, "D", 'media/orangeghost.png')
 
 if __name__ == "__main__":
     global SCREEN, CLOCK
@@ -286,7 +286,7 @@ if __name__ == "__main__":
     background = (0, 0, 0)
     screen.fill(background)
     pygame.display.set_caption("PacMan")
-    pygame_icon = pygame.image.load('icons8-pacman-100.png')
+    pygame_icon = pygame.image.load('media/icons8-pacman-100.png')
     pygame.display.set_icon(pygame_icon)
     world_data = copy.deepcopy(original_map)
     world = World(world_data)
