@@ -282,10 +282,10 @@ class Ghost():
 
 pacman = Pacman(25, 25, "R")
 
-tim = Ghost(225, 450, "D", 'media/redghost.png')
-pinky = Ghost(225, 250, "R", 'media/pinkghost.png')
+# tim = Ghost(225, 450, "D", 'media/redghost.png')
+# pinky = Ghost(225, 250, "R", 'media/pinkghost.png')
 matt = Ghost(450, 450, "L", 'media/cyanghost.png')
-clyde = Ghost(450, 250, "D", 'media/orangeghost.png')
+# clyde = Ghost(450, 250, "D", 'media/orangeghost.png')
 
 
 
@@ -312,10 +312,10 @@ if __name__ == "__main__":
         screen.fill((0, 0, 0))
         world.draw()
 
-        tim.update()
-        pinky.update()
+        # tim.update()
+        # pinky.update()
         matt.update()
-        clyde.update()
+        # clyde.update()
         pacman.update()
 
         for event in pygame.event.get():
