@@ -152,7 +152,9 @@ class Pacman():
             self.rect.x = px
             self.rect.y = py
 
-            world_data[int((self.rect.y / 25))][int((self.rect.x / 25))] = 2
+            for dot in world.dot_list[:]:  # iterate over a copy
+                if self.rect.colliderect(dot[1]):
+                    world.dot_list.remove(dot)
 
         screen.blit(self.image, self.rect)
 
@@ -263,9 +265,8 @@ if __name__ == "__main__":
     while True:
 
         count += 1
-        pygame.time.delay(120)
+        pygame.time.delay(100)
         screen.fill((0, 0, 0))
-        world = World(world_data)
         world.draw()
 
         tim.update()
