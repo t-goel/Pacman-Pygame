@@ -2,11 +2,6 @@ import copy
 import random
 import sys
 import pygame
-
-pygame.init()
-screen = pygame.display.set_mode([0, 0])
-clock = pygame.time.Clock()
-running = True
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -17,16 +12,15 @@ from pygame.locals import (
     QUIT,
 )
 
+pygame.init()
+screen = pygame.display.set_mode([0, 0])
+clock = pygame.time.Clock()
+running = True
+
+
 screen_width = 700
 screen_height = 775
 tile_size = 25
-
-def death():
-    screen.fill((0,0,0))
-    # screen.blit('redghost.png',(pacman.rect.x,pacman.rect.y))
-    pygame.display.update()
-
-screen = pygame.display.set_mode([0, 0])
 
 original_map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -61,30 +55,6 @@ original_map = [
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
-
-
-def quit_game(file):
-    fin = open(file, "r")
-    x = int(fin.read())
-    fin.close()
-    if len(world.dot_list) == 0:
-        if count < x:
-            fout = open(file, "w")
-            fout.truncate(0)
-            fout.write(str(count))
-            fout.close()
-            print("NEW HIGH SCORE: ", str(count))
-            print(f"The previous high score was {str(x)}.")
-
-
-        if count > x:
-            print(f"The current high score is {str(x)}.")
-            print("Your score was " + str(count) + " :(")
-
-    else:
-        print("GAME OVER.")
-
-
 
 class World():
     def __init__(self, data):
@@ -186,7 +156,7 @@ class Pacman():
 
         screen.blit(self.image, self.rect)
 
-#spent 3 hours on this
+
 class Ghost():
     def __init__(self, x, y, direction, colorfile):
         img = pygame.image.load(colorfile)
@@ -201,7 +171,6 @@ class Ghost():
         py = self.rect.y
         directions = ['U', 'D', 'R', 'L']
         if self.rect.x == pacman.rect.x and self.rect.y == pacman.rect.y:
-            quit_game('high_score.txt')
             sys.exit()
 
         try:
@@ -265,7 +234,6 @@ class Ghost():
         screen.blit(self.image, self.rect)
 
         if self.rect.x == pacman.rect.x and self.rect.y == pacman.rect.y:
-            quit_game('high_score.txt')
             sys.exit()
 
 
@@ -291,7 +259,7 @@ if __name__ == "__main__":
     world.draw()
     running = True
     count = 0
-
+    world = World(world_data)
     while True:
 
         count += 1
@@ -310,24 +278,12 @@ if __name__ == "__main__":
             # escape
             if event.type == pygame.KEYDOWN:
                 if event.key == K_ESCAPE:
-                    quit_game('high_score.txt')
                     sys.exit()
-            # for continuous running
-            # if event.type == pygame.KEYDOWN:
-            #     if event.key == pygame.K_r:
-            #         world_data = copy.deepcopy(original_map)
-            #         world = World(world_data)
-            #         pacman = Pacman(25, 25, "R")
-            #         count = 0
-            # running = False
 
             if event.type == pygame.QUIT:
-                #quit_game('high_score.txt')
                 sys.exit()
         if len(world.dot_list) == 0:
-            print("GAME OVER!")
-
-           # quit_game('high_score.txt')
+            print("You Won!")
             sys.exit()
 
         pygame.display.update()
