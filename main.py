@@ -11,6 +11,7 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
 )
+from q_learning import Q, save_q_table, get_state, epsilon_greedy, get_reward, update_q
 
 pygame.init()
 screen = pygame.display.set_mode([0, 0])
@@ -169,6 +170,44 @@ class Ghost():
         self.direction = direction
 
     def update(self):
+
+        if self == matt:
+            state = get_state(self, pacman, tile_size)
+    
+            # Pick an action with epsilon-greedy
+            action = epsilon_greedy(state, epsilon=0.2)
+
+            # Attempt move
+            valid_move = True
+            new_x, new_y = self.rect.x, self.rect.y
+            if action == "U":
+                new_y -= 25
+                if world_data[new_y // 25][new_x // 25] == 1:
+                    valid_move = False
+            elif action == "D":
+                new_y += 25
+                if world_data[new_y // 25][new_x // 25] == 1:
+                    valid_move = False
+            elif action == "L":
+                new_x -= 25
+                if world_data[new_y // 25][new_x // 25] == 1:
+                    valid_move = False
+            elif action == "R":
+                new_x += 25
+                if world_data[new_y // 25][new_x // 25] == 1:
+                    valid_move = False
+
+            # Reward and Q update
+            reward = get_reward(self, pacman, valid_move)
+            next_state = get_state(self, pacman, tile_size)
+            update_q(state, action, reward, next_state)
+
+            # Move if valid
+            if valid_move:
+                self.rect.x = new_x
+                self.rect.y = new_y
+
+            self.direction = action
         px = self.rect.x
         py = self.rect.y
         directions = ['U', 'D', 'R', 'L']
@@ -241,10 +280,10 @@ class Ghost():
 
 pacman = Pacman(25, 25, "R")
 
-tim = Ghost(225, 450, "D", 'media/redghost.png')
-pinky = Ghost(225, 250, "R", 'media/pinkghost.png')
+# tim = Ghost(225, 450, "D", 'media/redghost.png')
+# pinky = Ghost(225, 250, "R", 'media/pinkghost.png')
 matt = Ghost(450, 450, "L", 'media/cyanghost.png')
-clyde = Ghost(450, 250, "D", 'media/orangeghost.png')
+# clyde = Ghost(450, 250, "D", 'media/orangeghost.png')
 
 if __name__ == "__main__":
     global SCREEN, CLOCK
@@ -269,10 +308,10 @@ if __name__ == "__main__":
         screen.fill((0, 0, 0))
         world.draw()
 
-        tim.update()
-        pinky.update()
+        # tim.update()
+        # pinky.update()
         matt.update()
-        clyde.update()
+        # clyde.update()
         pacman.update()
 
         for event in pygame.event.get():
@@ -288,3 +327,7 @@ if __name__ == "__main__":
             sys.exit()
 
         pygame.display.update()
+
+
+        save_q_table()
+
