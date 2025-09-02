@@ -208,70 +208,72 @@ class Ghost():
                 self.rect.y = new_y
 
             self.direction = action
-        px = self.rect.x
-        py = self.rect.y
-        directions = ['U', 'D', 'R', 'L']
-        if self.rect.x == pacman.rect.x and self.rect.y == pacman.rect.y:
-            save_q_table()
-            running = False
 
-        try:
-            lcheck = world_data[int(py / 25)][int(px / 25) - 1] != 1
-            rcheck = world_data[int(py / 25)][int(px / 25) + 1] != 1
-            dcheck = world_data[int(py / 25) + 1][int(px / 25)] != 1
-            ucheck = world_data[int(py / 25) - 1][int(px / 25)] != 1
-        except IndexError:
-            pass
-        # first instance not on wall
-        if (self.direction == "L" and lcheck) or (self.direction == 'R' and rcheck):
-            if ucheck:
-                self.direction = random.choice([self.direction, self.direction, 'U'])
+        else:
+            px = self.rect.x
+            py = self.rect.y
+            directions = ['U', 'D', 'R', 'L']
+            if self.rect.x == pacman.rect.x and self.rect.y == pacman.rect.y:
+                save_q_table()
+                running = False
 
-            if dcheck:
-                self.direction = random.choice([self.direction, self.direction, 'D'])
-        elif (self.direction == "U" and ucheck) or (self.direction == 'D' and dcheck):
-            if rcheck:
-                self.direction = random.choice([self.direction, self.direction, 'R'])
+            try:
+                lcheck = world_data[int(py / 25)][int(px / 25) - 1] != 1
+                rcheck = world_data[int(py / 25)][int(px / 25) + 1] != 1
+                dcheck = world_data[int(py / 25) + 1][int(px / 25)] != 1
+                ucheck = world_data[int(py / 25) - 1][int(px / 25)] != 1
+            except IndexError:
+                pass
+            # first instance not on wall
+            if (self.direction == "L" and lcheck) or (self.direction == 'R' and rcheck):
+                if ucheck:
+                    self.direction = random.choice([self.direction, self.direction, 'U'])
 
-            if lcheck:
-                self.direction = random.choice([self.direction, self.direction, 'L'])
+                if dcheck:
+                    self.direction = random.choice([self.direction, self.direction, 'D'])
+            elif (self.direction == "U" and ucheck) or (self.direction == 'D' and dcheck):
+                if rcheck:
+                    self.direction = random.choice([self.direction, self.direction, 'R'])
 
-        # if ghost has a wall in front
-        elif (self.direction == "L" and not lcheck) or (self.direction == 'R' and not rcheck):
-            if ucheck and dcheck:
-                self.direction = random.choice(["U", "D"])
-            elif ucheck:
-                self.direction = "U"
-            elif dcheck:
-                self.direction = "D"
+                if lcheck:
+                    self.direction = random.choice([self.direction, self.direction, 'L'])
 
-        elif (self.direction == "U" and not ucheck) or (self.direction == 'D' and not dcheck):
-            if rcheck and lcheck:
-                self.direction = random.choice(["R", "L"])
-            elif rcheck:
-                self.direction = "R"
-            elif lcheck:
-                self.direction = "L"
+            # if ghost has a wall in front
+            elif (self.direction == "L" and not lcheck) or (self.direction == 'R' and not rcheck):
+                if ucheck and dcheck:
+                    self.direction = random.choice(["U", "D"])
+                elif ucheck:
+                    self.direction = "U"
+                elif dcheck:
+                    self.direction = "D"
 
-        if self.direction == "R":
-            px += 25
-        if self.direction == "L":
-            px -= 25
-        if self.direction == "D":
-            py += 25
-        if self.direction == "U":
-            py -= 25
+            elif (self.direction == "U" and not ucheck) or (self.direction == 'D' and not dcheck):
+                if rcheck and lcheck:
+                    self.direction = random.choice(["R", "L"])
+                elif rcheck:
+                    self.direction = "R"
+                elif lcheck:
+                    self.direction = "L"
 
-        if px == 675 and py == 350 and self.direction == "R":
-            px = 0
-            py = 350
-        if px == -25 and py == 350 and self.direction == "L":
-            px = 650
-            py = 350
+            if self.direction == "R":
+                px += 25
+            if self.direction == "L":
+                px -= 25
+            if self.direction == "D":
+                py += 25
+            if self.direction == "U":
+                py -= 25
 
-        if world_data[int((py / 25))][int((px / 25))] != 1:
-            self.rect.x = px
-            self.rect.y = py
+            if px == 675 and py == 350 and self.direction == "R":
+                px = 0
+                py = 350
+            if px == -25 and py == 350 and self.direction == "L":
+                px = 650
+                py = 350
+
+            if world_data[int((py / 25))][int((px / 25))] != 1:
+                self.rect.x = px
+                self.rect.y = py
 
         screen.blit(self.image, self.rect)
 
@@ -308,7 +310,7 @@ if __name__ == "__main__":
     while running:
         
         # count += 1
-        pygame.time.delay(100)
+        pygame.time.delay(200)
         screen.fill((0, 0, 0))
         world.draw()
 

@@ -42,6 +42,7 @@ def epsilon_greedy(state, epsilon=0.2):
 
 def get_reward(ghost, pacman, valid_move):
     if ghost.rect.colliderect(pacman.rect):
+        print("learned")
         return 10  # caught Pac-Man
     if not valid_move:
         return -5  # hit a wall
