@@ -259,7 +259,7 @@ if __name__ == "__main__":
     world.draw()
     running = True
     count = 0
-    world = World(world_data)
+    
     while True:
 
         count += 1
