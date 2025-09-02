@@ -324,12 +324,12 @@ if __name__ == "__main__":
             # running = False
 
             if event.type == pygame.QUIT:
-                quit_game('high_score.txt')
+                #quit_game('high_score.txt')
                 sys.exit()
         if len(world.dot_list) == 0:
             print("GAME OVER!")
 
-            quit_game('high_score.txt')
+           # quit_game('high_score.txt')
             sys.exit()
 
         pygame.display.update()
