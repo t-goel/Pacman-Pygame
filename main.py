@@ -18,7 +18,6 @@ screen = pygame.display.set_mode([0, 0])
 clock = pygame.time.Clock()
 running = True
 
-
 screen_width = 700
 screen_height = 775
 tile_size = 25
@@ -170,6 +169,7 @@ class Ghost():
         self.direction = direction
 
     def update(self):
+        global running
 
         if self == matt:
             state = get_state(self, pacman, tile_size)
@@ -212,7 +212,8 @@ class Ghost():
         py = self.rect.y
         directions = ['U', 'D', 'R', 'L']
         if self.rect.x == pacman.rect.x and self.rect.y == pacman.rect.y:
-            sys.exit()
+            save_q_table()
+            running = False
 
         try:
             lcheck = world_data[int(py / 25)][int(px / 25) - 1] != 1
@@ -275,15 +276,18 @@ class Ghost():
         screen.blit(self.image, self.rect)
 
         if self.rect.x == pacman.rect.x and self.rect.y == pacman.rect.y:
-            sys.exit()
+            save_q_table()
+            running = False
 
 
 pacman = Pacman(25, 25, "R")
 
-# tim = Ghost(225, 450, "D", 'media/redghost.png')
-# pinky = Ghost(225, 250, "R", 'media/pinkghost.png')
+tim = Ghost(225, 450, "D", 'media/redghost.png')
+pinky = Ghost(225, 250, "R", 'media/pinkghost.png')
 matt = Ghost(450, 450, "L", 'media/cyanghost.png')
-# clyde = Ghost(450, 250, "D", 'media/orangeghost.png')
+clyde = Ghost(450, 250, "D", 'media/orangeghost.png')
+
+
 
 if __name__ == "__main__":
     global SCREEN, CLOCK
@@ -298,36 +302,39 @@ if __name__ == "__main__":
     world_data = copy.deepcopy(original_map)
     world = World(world_data)
     world.draw()
-    running = True
-    count = 0
     
-    while True:
+    # count = 0
 
-        count += 1
+    while running:
+        
+        # count += 1
         pygame.time.delay(100)
         screen.fill((0, 0, 0))
         world.draw()
 
-        # tim.update()
-        # pinky.update()
+        tim.update()
+        pinky.update()
         matt.update()
-        # clyde.update()
+        clyde.update()
         pacman.update()
 
         for event in pygame.event.get():
             # escape
             if event.type == pygame.KEYDOWN:
                 if event.key == K_ESCAPE:
-                    sys.exit()
+                    running = False
 
             if event.type == pygame.QUIT:
-                sys.exit()
+                running = False
         if len(world.dot_list) == 0:
             print("You Won!")
-            sys.exit()
+            running = False
 
         pygame.display.update()
 
 
         save_q_table()
+
+    save_q_table()
+    pygame.quit()
 
