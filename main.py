@@ -198,7 +198,8 @@ class Ghost():
                     valid_move = False
 
             # Reward and Q update
-            reward = get_reward(self, pacman, valid_move)
+            reward, distance = get_reward(self, pacman, valid_move, self.prev_distance)
+            self.prev_distance = distance
             next_state = get_state(self, pacman, tile_size)
             update_q(state, action, reward, next_state)
 
@@ -289,7 +290,7 @@ pacman = Pacman(25, 25, "R")
 matt = Ghost(450, 450, "L", 'media/cyanghost.png')
 # clyde = Ghost(450, 250, "D", 'media/orangeghost.png')
 
-
+matt.prev_distance = abs(matt.rect.x - pacman.rect.x) + abs(matt.rect.y - pacman.rect.y)
 
 if __name__ == "__main__":
     global SCREEN, CLOCK
@@ -310,7 +311,7 @@ if __name__ == "__main__":
     while running:
         
         # count += 1
-        pygame.time.delay(200)
+        pygame.time.delay(10)
         screen.fill((0, 0, 0))
         world.draw()
 

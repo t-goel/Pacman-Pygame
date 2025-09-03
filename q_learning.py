@@ -40,13 +40,36 @@ def epsilon_greedy(state, epsilon=0.2):
         return max(Q[state], key=Q[state].get)
 
 
-def get_reward(ghost, pacman, valid_move):
+
+def get_reward(ghost, pacman, valid_move, prev_distance=None):
+    # Current Manhattan distance
+    gx, gy = ghost.rect.x, ghost.rect.y
+    px, py = pacman.rect.x, pacman.rect.y
+    distance = abs(gx - px) + abs(gy - py)
+    
+    reward = 0
+
+    # Caught Pac-Man
     if ghost.rect.colliderect(pacman.rect):
         print("learned")
-        return 10  # caught Pac-Man
+        return 10, distance
+
+    # Hit a wall
     if not valid_move:
-        return -5  # hit a wall
-    return -1  # step penalty
+        reward -= 5
+
+    # Step penalty
+    reward -= 1
+
+    # Reward for getting closer to Pac-Man
+    if prev_distance is not None:
+        if distance < prev_distance:
+            reward += 2  # moved closer
+        elif distance > prev_distance:
+            reward -= 2  # moved away
+
+    return reward, distance
+
 
 def update_q(state, action, reward, next_state, alpha=0.1, gamma=0.9):
     init_q(next_state)
