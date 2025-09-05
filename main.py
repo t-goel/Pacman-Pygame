@@ -311,7 +311,7 @@ if __name__ == "__main__":
     while running:
         
         # count += 1
-        pygame.time.delay(10)
+        pygame.time.delay(120)
         screen.fill((0, 0, 0))
         world.draw()
 
